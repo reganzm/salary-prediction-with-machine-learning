@@ -33,7 +33,7 @@ def saveLagou(job):
             res = res.groupdict()
             salary = (int(res['low']) + int(res['high'])) / 2
             jd = job['job_description']
-            f.write('{0},{1}'.format(salary,jd.encode('utf8')))
+            f.write('{0},{1}\n'.format(salary,jd.encode('utf8')))
     except Exception,e:
         print(e)
 
