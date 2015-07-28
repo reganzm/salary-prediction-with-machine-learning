@@ -23,3 +23,6 @@ def getWordwithWeight(sentence):
     wordlist = [r[0] for r in ret]
     flist = [r[1] for r in ret]
     return ret,wordlist,flist
+
+def getCountedDict():
+    pass
