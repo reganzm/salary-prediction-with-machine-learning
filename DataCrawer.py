@@ -38,7 +38,7 @@ def saveLagou(job):
         print(e)
 
 if __name__=='__main__':
-    for i in range(55300,999999):
+    for i in range(0,999999):
         try:
             saveLagou(getLagou(i))
             print('\r {0} id Finished\r'.format(i),file=sys.stdout)
