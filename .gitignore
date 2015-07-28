@@ -58,3 +58,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Pickle Files
+*.pkl
+
+# Virtualenv
+salary/

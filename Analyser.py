@@ -6,6 +6,7 @@ Do some data-work
 
 from jieba.analyse import textrank
 import cPickle
+import sys
 
 def getWordwithWeight(sentence):
     """
@@ -25,17 +26,25 @@ def getWordwithWeight(sentence):
     flist = [r[1] for r in ret]
     return ret,wordlist,flist
 
-def getCountedDict(wl,fl,output='CountDict.pkl',maxNum=5*10000):
+def getCountedDict(count_dict,wl,fl,output='CountDict.pkl',maxNum=5*10000):
     """
     word list
     frequence list
     """
-    count_dict = {}
     for i in range(len(wl)):
         if count_dict.get(wl[i]) == None:
             count_dict[wl[i]] = fl[i]
         else:
             count_dict[wl[i]] += fl[i]
-    with open(output) as pf:
-        cPickle.dump(count_dict,pf)
     return count_dict
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        raise Exception("Wrong Argument number!")
+    count_dict = {}
+    with open(sys.argv[1]) as f:
+        for l in f:
+            _,wl,fl = getWordwithWeight(l)
+            getCountedDict(count_dict,wl,fl)
+    with open('CountedDict.pkl','a+') as pf:
+        cPickle.dump(count_dict,pf)
