@@ -10,8 +10,11 @@ def getWordwithWeight(sentence):
     """
     return
     """
-    salary = float(sentence.split(',')[0])
-    jd = sentence[sentence.index(',')+1:]
+    try:
+        salary = float(sentence.split(',')[0])
+        jd = sentence[sentence.index(',')+1:]
+    except Exception,e:
+        return None,None,None
     ret = []
     for (w,f) in textrank(jd,topK=50,
                           withWeight=True,
