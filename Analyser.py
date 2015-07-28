@@ -41,10 +41,13 @@ def getCountedDict(count_dict,wl,fl,output='CountDict.pkl',maxNum=5*10000):
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         raise Exception("Wrong Argument number!")
+    print(sys.argv)
     count_dict = {}
     with open(sys.argv[1]) as f:
         for l in f:
             _,wl,fl = getWordwithWeight(l)
+            if wl == None:
+                continue
             getCountedDict(count_dict,wl,fl)
     with open('CountedDict.pkl','a+') as pf:
         cPickle.dump(count_dict,pf)
