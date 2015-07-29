@@ -112,31 +112,44 @@ def Train():
     """
     Train Function
     """
-    with open('X_train.pkl') as Xf:
-        X = cPickle.load(Xf)
-    with open('y_train.pkl') as yf:
-        y = cPickle.load(yf)
-    X_train, X_test, Y_train, Y_test = train_test_split(X, y,
-                                                        test_size=0.2,
-                                                        random_state=0)
+    if os.path.exists('X_train.pkl') == False:
+        print("generate data and split to train test set.")
+        with open('X.pkl') as Xf:
+            X = cPickle.load(Xf)
+        with open('Y.pkl') as Yf:
+            Y = cPickle.load(Yf)
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+    else:
+        print("load data from pickled files..")
+        with open('X_train.pkl') as x_train_f:
+            X_train = cPickle.load(x_train_f)
+        with open('X_test.pkl')  as x_test_f:
+            X_test  = cPickle.load(x_test_f)
+        with open('Y_train.pkl') as y_train_f:
+            Y_train = cPickle.load(y_train_f)
+        with open('Y_test.pkl')  as y_test_f:
+            Y_test  = cPickle.load(y_test_f)
+    print("Load Data success!")
+
     logistic = linear_model.LogisticRegression()
     rbm = BernoulliRBM(random_state=0, verbose=True)
-    rbm.learning_rate = 0.03
-    rbm.n_iter = 100
+    rbm.learning_rate = 0.06
+    rbm.n_iter = 300
     rbm.n_components = 1000
     logistic.C = 6000.0
     clf = Pipeline(steps=[('rbm', rbm), ('logistic', logistic)])
-    #clf.fit(X_train,Y_train)
-    logistic_classifier = linear_model.LogisticRegression(C=100.0)
-    logistic_classifier.fit(X_train, Y_train)
-    print("Logistic regression using raw pixel features:\n%s\n" % (
-    metrics.classification_report(
-        Y_test,
-        logistic_classifier.predict(X_test))))
-    #print("Logistic regression using RBM features:\n%s\n" % (
+    clf.fit(X_train,Y_train)
+    #logistic_classifier = linear_model.LogisticRegression(C=100.0)
+    #logistic_classifier.fit(X_train, Y_train)
+    #print("Logistic regression using raw pixel features:\n%s\n" % (
     #metrics.classification_report(
     #    Y_test,
-    #    clf.predict(X_test))))
+    #    logistic_classifier.predict(X_test))))
+    print("fit complete..")
+    print("Logistic regression using RBM features:\n%s\n" % (
+    metrics.classification_report(
+        Y_test,
+        clf.predict(X_test))))
     with open('clf.pkl','a+') as clf_f:
         cPickle.dump(clf,clf_f)
 
@@ -151,6 +164,6 @@ if __name__ == '__main__':
     # generate X,y ====> Hard work here.
     # 1. build an N-length array, generate X with this array
     # 2. paired with y
-    if os.path.exists('X_train.pkl') == False:
+    if os.path.exists('X.pkl') == False:
         genXY(sys.argv[1],bSave=True,limit=20000)
     Train()
