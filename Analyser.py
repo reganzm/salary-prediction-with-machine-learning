@@ -26,7 +26,7 @@ def getWordwithWeight(sentence):
     flist = [r[1] for r in ret]
     return ret,wordlist,flist
 
-def getCountedDict(count_dict,wl,fl,output='CountDict.pkl',maxNum=5*10000):
+def getCountedDict(count_dict,wl,fl,output='CountDict.pkl'):
     """
     word list
     frequence list
@@ -38,7 +38,7 @@ def getCountedDict(count_dict,wl,fl,output='CountDict.pkl',maxNum=5*10000):
             count_dict[wl[i]] += fl[i]
     return count_dict
 
-if __name__ == '__main__':
+def genCountedDict():
     if len(sys.argv) < 2:
         raise Exception("Wrong Argument number!")
     print(sys.argv)
@@ -51,3 +51,11 @@ if __name__ == '__main__':
             getCountedDict(count_dict,wl,fl)
     with open('CountedDict.pkl','a+') as pf:
         cPickle.dump(count_dict,pf)
+
+
+if __name__ == '__main__':
+    # generate a counted dictionary named 'CountDict.pkl'
+    genCountedDict()
+    # generate X,y ====> Hard work here.
+    # 1. build an N-length array, generate X with this array
+    # 2. paired with y
