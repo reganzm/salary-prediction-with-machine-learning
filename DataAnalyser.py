@@ -5,7 +5,6 @@ Do some data-work
 """
 from __future__ import print_function
 
-
 import cPickle
 import sys
 import os
@@ -15,7 +14,8 @@ from sklearn import linear_model, datasets, metrics
 from sklearn.cross_validation import train_test_split
 from sklearn.neural_network import BernoulliRBM
 from sklearn.pipeline import Pipeline
-
+import jieba
+from jieba.analyse import textrank
 
 def getWordwithWeight(sentence):
     """
@@ -48,7 +48,9 @@ def getCountedDict(count_dict,wl,fl,output='CountDict.pkl'):
     return count_dict
 
 def genCountedDict():
-    from jieba.analyse import textrank
+    """
+    generator
+    """
     count_dict = {}
     with open(sys.argv[1]) as f:
         index = 0
