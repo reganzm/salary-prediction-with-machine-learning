@@ -5,11 +5,15 @@ Do some data-work
 """
 from __future__ import print_function
 
+<<<<<<< HEAD
 try:
     import cPickle as pickle
 except:
     import pickle
 
+=======
+import cPickle
+>>>>>>> cbc1edca68d5d264b7363f4374e9046d5452917a
 import sys
 import os
 import numpy as np
@@ -18,6 +22,10 @@ from sklearn import linear_model, datasets, metrics
 from sklearn.cross_validation import train_test_split
 from sklearn.neural_network import BernoulliRBM
 from sklearn.pipeline import Pipeline
+<<<<<<< HEAD
+=======
+import jieba
+>>>>>>> cbc1edca68d5d264b7363f4374e9046d5452917a
 from jieba.analyse import textrank
 
 def getWordwithWeight(sentence):
@@ -51,6 +59,12 @@ def getCountedDict(count_dict,wl,fl,output='CountDict.pkl'):
     return count_dict
 
 def genCountedDict():
+<<<<<<< HEAD
+=======
+    """
+    generator
+    """
+>>>>>>> cbc1edca68d5d264b7363f4374e9046d5452917a
     count_dict = {}
     with open(sys.argv[1]) as f:
         index = 0
