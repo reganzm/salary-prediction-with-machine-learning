@@ -5,8 +5,11 @@ Do some data-work
 """
 from __future__ import print_function
 
+try:
+    import cPickle as pickle
+except:
+    import pickle
 
-import cPickle
 import sys
 import os
 import numpy as np
@@ -15,7 +18,7 @@ from sklearn import linear_model, datasets, metrics
 from sklearn.cross_validation import train_test_split
 from sklearn.neural_network import BernoulliRBM
 from sklearn.pipeline import Pipeline
-
+from jieba.analyse import textrank
 
 def getWordwithWeight(sentence):
     """
@@ -24,7 +27,7 @@ def getWordwithWeight(sentence):
     try:
         salary = float(sentence.split(',')[0])
         jd = sentence[sentence.index(',')+1:]
-    except Exception,e:
+    except Exception as e:
         return None,None,None,None
     ret = []
     for (w,f) in textrank(jd,topK=30,
@@ -48,23 +51,25 @@ def getCountedDict(count_dict,wl,fl,output='CountDict.pkl'):
     return count_dict
 
 def genCountedDict():
-    from jieba.analyse import textrank
     count_dict = {}
     with open(sys.argv[1]) as f:
         index = 0
         for l in f:
-            print('\r Processed {0} line of jd&salary. \r'.format(index),file=sys.stdout,end=" ")
-            index += 1
-            _,wl,fl,_ = getWordwithWeight(l)
-            if wl == None:
-                continue
-            getCountedDict(count_dict,wl,fl)
+            try:
+                print('\r Processed {0} line of jd&salary. \r'.format(index),file=sys.stdout,end=" ")
+                index += 1
+                _,wl,fl,_ = getWordwithWeight(l)
+                if wl == None:
+                    continue
+                getCountedDict(count_dict,wl,fl)
+            except KeyboardInterrupt as e:
+                break
     with open('CountedDict.pkl','a+') as pf:
-        cPickle.dump(count_dict,pf)
+        pickle.dump(count_dict,pf)
 
 def genWholeDict():
     with open('CountedDict.pkl') as f:
-        cd = cPickle.load(f)
+        cd = pickle.load(f)
     scd = sorted(cd.items(),key=lambda k:k[1],reverse=True)
     return scd
 
@@ -76,7 +81,7 @@ def genXY(fName,bSave=False,limit=None):
     """
     X = []
     y = []
-    whole_word_freq_list = genWholeDict()[:15000]
+    whole_word_freq_list = genWholeDict()[:5000]
     print("whole dict load success!")
     whole_word_list = [wi[0] for wi in whole_word_freq_list]
     #whole_freq_list = [wi[1] for wi in whole_word_list]
@@ -97,48 +102,68 @@ def genXY(fName,bSave=False,limit=None):
                 try:
                     windex = whole_word_list.index(wl[i])
                     Xi[windex] = fl[i]
-                except Exception,e: # dono deal with any exception!
+                except Exception as e:
                     pass
             X.append(Xi.tolist())
             y.append(yi)
     if bSave == True:
-        with open('X_train.pkl','a+') as Xf:
-            cPickle.dump(X,Xf)
-        with open('y_train.pkl','a+') as yf:
-            cPickle.dump(y,yf)
+        print("saving X,Y dataset!")
+        with open('X.pkl','a+') as Xf:
+            pickle.dump(X,Xf)
+        with open('Y.pkl','a+') as yf:
+            pickle.dump(y,yf)
     return X,y
 
 def Train():
     """
     Train Function
     """
+    with open('X.pkl') as Xf:
+        X = pickle.load(Xf)
+    with open('Y.pkl') as Yf:
+        Y = pickle.load(Yf)
+    """
     if os.path.exists('X_train.pkl') == False:
         print("generate data and split to train test set.")
         with open('X.pkl') as Xf:
-            X = cPickle.load(Xf)
+            X = pickle.load(Xf)
         with open('Y.pkl') as Yf:
-            Y = cPickle.load(Yf)
+            Y = pickle.load(Yf)
+        print("load X,Y success!")
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+        print("dump Train,Test dataset into pickled files..")
+        with open('X_train.pkl') as x_train_f:
+            pickle.dump(X_train,x_train_f)
+        with open('X_test.pkl')  as x_test_f:
+            pickle.load(X_test,x_test_f)
+        with open('Y_train.pkl') as y_train_f:
+            pickle.load(Y_train,y_train_f)
+        with open('Y_test.pkl')  as y_test_f:
+            pickle.load(Y_test,y_test_f)
+        print("dump Train,Test dataset into pickled files finished..")
 
     print("load data from pickled files..")
     with open('X_train.pkl') as x_train_f:
-        X_train = cPickle.load(x_train_f)
+        X_train = pickle.load(x_train_f)
     with open('X_test.pkl')  as x_test_f:
-        X_test  = cPickle.load(x_test_f)
+        X_test  = pickle.load(x_test_f)
     with open('Y_train.pkl') as y_train_f:
-        Y_train = cPickle.load(y_train_f)
+        Y_train = pickle.load(y_train_f)
     with open('Y_test.pkl')  as y_test_f:
-        Y_test  = cPickle.load(y_test_f)
+        Y_test  = pickle.load(y_test_f)
     print("Load Data success!")
-
+    """
+    X = X[:int(len(X)/2)]
+    Y = Y[:int(len(X)/2)]
     logistic = linear_model.LogisticRegression()
     rbm = BernoulliRBM(random_state=0, verbose=True)
-    rbm.learning_rate = 0.06
-    rbm.n_iter = 300
+    rbm.learning_rate = 0.09
+    rbm.n_iter = 200
     rbm.n_components = 1000
     logistic.C = 6000.0
     clf = Pipeline(steps=[('rbm', rbm), ('logistic', logistic)])
-    clf.fit(X_train,Y_train)
+    #clf.fit(X_train,Y_train)
+    clf.fit(X,Y)
     #logistic_classifier = linear_model.LogisticRegression(C=100.0)
     #logistic_classifier.fit(X_train, Y_train)
     #print("Logistic regression using raw pixel features:\n%s\n" % (
@@ -146,12 +171,12 @@ def Train():
     #    Y_test,
     #    logistic_classifier.predict(X_test))))
     print("fit complete..")
-    print("Logistic regression using RBM features:\n%s\n" % (
-    metrics.classification_report(
-        Y_test,
-        clf.predict(X_test))))
+    #print("Logistic regression using RBM features:\n%s\n" % (
+    #metrics.classification_report(
+    #    Y_test,
+    #    clf.predict(X_test))))
     with open('clf.pkl','a+') as clf_f:
-        cPickle.dump(clf,clf_f)
+        pickle.dump(clf,clf_f)
 
 
 if __name__ == '__main__':
