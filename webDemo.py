@@ -24,9 +24,12 @@ def predict():
 
 @app.route('/do_predict/',methods=['POST'])
 def do_predict():
-    jd = request.form['jd']
-    X = A.get_single_X(jd)
-    salary = clf.predict(X)
+    try:
+        jd = request.form['jd']
+        X = A.get_single_X(jd)
+        salary = clf.predict(X)
+    except Exception,e:
+        print(e)
     return salary
 
 @app.route('/aboutme',methods=['GET'])
