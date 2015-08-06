@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<script type="text/javascript">
+
+  function do_predict()
+  {
+  target_url = '/do_predict/';
+  var jd = $("#jd_textarea").val();
+  $.ajax(
+  {type:'POST',
+  url:target_url,
+  data:{'jd':jd},
+  async:false,
+  success:function(data) {$("#salary_textarea").text(data+'k');},
+  error:null
+  }
+  );
+  }
+
+</script>
+
+<div class="container">
+  <div style="padding: 20px 20px 10px;">
+    <header id="header" class="info">
+      <h3>pre-Eval your CV&JD</h3>
+    </header>
+    <div class="row clearfix">
+      <div class="col-md-8 column">
+        <!-- Textarea -->
+        <label class="control-label" id="label_of_cd">请把薪水或者职位贴在下面</label>
+        <div class="controls">
+          <div class="textarea">
+            <textarea id="jd_textarea" rows="10" cols="20"></textarea>
+            <!-- Textarea -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 column">
+        <label class="control-label">预测结果</label>
+        <div class="controls">
+          <div class="textarea">
+            <textarea id="salary_textarea" rows="1" cols="2" disabled=1></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button type="button" id="btn2" onclick="do_predict()">Submit</button>
+  </div>
+  <text>如果觉得有意思的话，请到<a href="https://github.com/origingod/salary-prediction-with-machine-learning">git</a>帮我加个星星吧！</text>
+  <div>
+</div>
+</div>
+
+
+{% endblock %}
