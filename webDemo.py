@@ -28,7 +28,7 @@ def do_predict():
         jd = request.form['jd']
         X = A.get_single_X(jd)
         if len(X.nonzero()[0]) < 10:
-            return "信息量太少，无法预测。"
+            return "信息量太少，无法预测——0"
         salary = clf.predict(X)
         print(salary[0])
     except Exception,e:
