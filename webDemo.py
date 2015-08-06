@@ -28,13 +28,14 @@ def do_predict():
         jd = request.form['jd']
         X = A.get_single_X(jd)
         salary = clf.predict(X)
+        print(salary[0])
     except Exception,e:
         print(e)
-    return salary
+    return str(salary[0])
 
 @app.route('/aboutme',methods=['GET'])
 def aboutme():
     return render_template('aboutme.html')
 
 if __name__ == '__main__':
-    app.run(debug=False,port=8000,host='127.0.0.1')
+    app.run(debug=True,port=8000,host='127.0.0.1')
