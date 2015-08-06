@@ -35,7 +35,7 @@ def do_predict():
         print(e)
     return str(salary[0])
 
-@app.route('/aboutme',methods=['GET'])
+@app.route('/aboutme/',methods=['GET'])
 def aboutme():
     return render_template('aboutme.html')
 
