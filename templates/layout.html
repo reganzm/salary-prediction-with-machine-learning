@@ -12,16 +12,25 @@
 <script src="{{ url_for('static',filename='js/jquery-2.1.4.min.js') }}"></script>
 <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
 
-<nav class="navbar navbar-default" role="navigation">
-   <div>
-      <ul class="nav navbar-nav">
-         <li><a href="/aboutme">About Me</a></li>
-         <!-- <li><a href="/accounts">Accounts</a></li> -->
-      </ul>
-   </div>
-</nav>
-  {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-  {% endfor %}
-  {% block body %}{% endblock %}
+<div class="container">
+        <div class="row clearfix">
+                <div class="col-md-12 column">
+                        <ul class="nav nav-pills">
+                                <li class="active">
+                                         <a href="/aboutme">Aboutme</a>
+                                </li>
+                                <li>
+                                         <a href="#">简介</a>
+                                </li>
+                                <li class="disabled">
+                                         <a href="#">信息</a>
+                                </li>
+                        </ul>
+                </div>
+        </div>
+</div>
+{% for message in get_flashed_messages() %}
+<div class=flash>{{ message }}</div>
+{% endfor %}
+{% block body %}{% endblock %}
 </div>

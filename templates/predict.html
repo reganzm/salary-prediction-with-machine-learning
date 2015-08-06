@@ -25,34 +25,40 @@
     <header id="header" class="info">
       <h3>pre-Eval your CV&JD</h3>
     </header>
-    <div class="row clearfix">
-      <div class="col-md-8 column">
-        <!-- Textarea -->
-        <label class="control-label" id="label_of_cd">请把薪水或者职位贴在下面</label>
-        <div class="controls">
-          <div class="textarea">
-            <textarea id="jd_textarea" rows="10" cols="20"></textarea>
-            <!-- Textarea -->
+    <div class="span4">
+      <div class="row clearfix">
+        <div class="col-md-8 column">
+          <!-- Textarea -->
+          <label class="control-label" id="label_of_cd">请把JD或者文字版简历贴在下面</label>
+          <div class="controls">
+            <div class="textarea">
+              <textarea id="jd_textarea" rows="10" cols="20"></textarea>
+              <!-- Textarea -->
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-4 column">
-        <label class="control-label">预测结果</label>
-        <div class="controls">
-          <div class="textarea">
-            <textarea id="salary_textarea" rows="1" cols="2" disabled=1></textarea>
+        <div class="col-md-4 column">
+          <label class="control-label">预测结果</label>
+          <div class="controls">
+            <div class="textarea">
+              <textarea id="salary_textarea" rows="1" cols="2" disabled=1></textarea>
+            </div>
           </div>
+          <div class="controls">
+            <button type="button" id="btn2" onclick="do_predict()">看看我的薪水</button>
+          </div>
+
         </div>
+
       </div>
     </div>
   </div>
 
-  <div class="controls">
-    <button type="button" id="btn2" onclick="do_predict()">Submit</button>
+  <div class="span4">
+    <text>如果觉得有意思的话，请到<a href="https://github.com/origingod/salary-prediction-with-machine-learning">git</a>帮我加个星星吧！</text>
+    <div>
+    </div>
   </div>
-  <text>如果觉得有意思的话，请到<a href="https://github.com/origingod/salary-prediction-with-machine-learning">git</a>帮我加个星星吧！</text>
-  <div>
-</div>
 </div>
 
 

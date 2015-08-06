@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('predict.html')
 
 @app.route('/predict/',methods=['GET','POST'])
 def predict():
@@ -29,6 +29,9 @@ def do_predict():
     salary = clf.predict(X)
     return salary
 
+@app.route('/aboutme',methods=['GET'])
+def aboutme():
+    return render_template('aboutme.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False,port=8000,host='127.0.0.1')
