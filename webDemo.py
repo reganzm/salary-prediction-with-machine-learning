@@ -11,4 +11,4 @@ def hello_world():
     return 'Hello World!'
 
 if __name__ == '__main__':
-    app.run(host='p.ethte.com',port=8080)
+    app.run(port=8000)
