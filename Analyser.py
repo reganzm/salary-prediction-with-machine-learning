@@ -97,9 +97,24 @@ def gen_func_single_XY():
             except Exception as e:
                 pass
         return (X,Y)
-    return single_XY
+    def single_X(sentence):
+        _,wl,fl = getWordwithWeightFromJD(sentence)
+        X = np.zeros(len(whole_word_list))
+        for i in range(len(wl)):
+            try:
+                windex = whole_word_list.index(wl[i])
+                X[windex] = fl[i]
+            except Exception as e:
+                pass
+        return X
+    return single_XY,single_X
 
-get_single_XY = gen_func_single_XY()
+get_single_XY,get_single_X = gen_func_single_XY()
+
+def get_clf(clf_pickle="clf.pkl"):
+    with open(clf_pickle) as f:
+        clf = pickle.load(f)
+    return clf
 
 def genXY(fName,bSave=False,limit=None):
     """
@@ -220,5 +235,5 @@ if __name__ == '__main__':
     # 1. build an N-length array, generate X with this array
     # 2. paired with y
     if os.path.exists('X.pkl') == False:
-        genXY(sys.argv[1],bSave=True,limit=15000)
+        genXY(sys.argv[1],bSave=True,limit=30000)
     Train()

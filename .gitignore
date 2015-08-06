@@ -7,6 +7,7 @@ __pycache__/
 .DS_Store
 # csv files
 *.csv
+salary/
 
 # Distribution / packaging
 .Python
