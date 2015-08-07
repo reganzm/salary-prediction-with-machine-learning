@@ -38,3 +38,9 @@ python DataAnalyser.py {生成的.csv文件}
 
 ### 输出：
 * 数据1: 薪水数量
+
+
+### 实例网站
+
+* http://123.57.52.165/
+![image](https://github.com/origingod/salary-prediction-with-machine-learning/raw/master/pic/123.png)
