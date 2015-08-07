@@ -21,7 +21,7 @@ from sklearn.pipeline import Pipeline
 from jieba.analyse import textrank
 
 TopK_per_jd = 50
-TopK_Words = 3500
+TopK_Words = 2400
 
 def getWordwithWeightFromJD(jd):
     """
