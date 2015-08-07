@@ -21,7 +21,7 @@ from sklearn.pipeline import Pipeline
 from jieba.analyse import textrank
 
 TopK_per_jd = 50
-TopK_Words = 2400
+TopK_Words = 3500
 
 def getWordwithWeightFromJD(jd):
     """
@@ -204,8 +204,8 @@ def Train():
     logistic = linear_model.LogisticRegression()
     rbm = BernoulliRBM(random_state=0, verbose=True)
     rbm.learning_rate = 0.1
-    rbm.n_iter = 150
-    rbm.n_components = 1000
+    rbm.n_iter = 200
+    rbm.n_components = 1200
     logistic.C = 6000.0
     clf = Pipeline(steps=[('rbm', rbm), ('logistic', logistic)])
     clf.fit(X,Y)
@@ -235,5 +235,5 @@ if __name__ == '__main__':
     # 1. build an N-length array, generate X with this array
     # 2. paired with y
     if os.path.exists('X.pkl') == False:
-        genXY(sys.argv[1],bSave=True,limit=30000)
+        genXY(sys.argv[1],bSave=True,limit=50000)
     Train()

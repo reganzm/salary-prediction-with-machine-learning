@@ -5,6 +5,7 @@ import os
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 import requests
+import urllib
 
 import Analyser as A
 clf = A.get_clf()
@@ -26,6 +27,7 @@ def predict():
 def do_predict():
     try:
         jd = request.form['jd']
+        jd = urllib.unquote(jd)
         X = A.get_single_X(jd)
         salary = clf.predict(X)
         print(salary[0])
